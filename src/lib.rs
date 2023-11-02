@@ -8,11 +8,11 @@ use headers::authorization::{Authorization, Basic};
 use headers::{ContentType, HeaderMapExt};
 use hyper::client::connect::HttpConnector;
 use hyper::{Body, Method, StatusCode};
-use hyper_tls::HttpsConnector;
 pub use message::{Message, OutboundMessage};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
+use wasmedge_hyper_rustls::connector::HttpsConnector;
 
 pub const GET: Method = Method::GET;
 pub const POST: Method = Method::POST;
@@ -79,7 +79,11 @@ impl Client {
             account_id: account_id.to_string(),
             auth_token: auth_token.to_string(),
             auth_header: Authorization::basic(account_id, auth_token),
-            http_client: hyper::Client::builder().build(HttpsConnector::new()),
+            http_client: hyper::Client::builder().build(
+                wasmedge_hyper_rustls::connector::new_https_connector(
+                    wasmedge_rustls_api::ClientConfig::default(),
+                ),
+            ),
         }
     }
 

@@ -29,10 +29,10 @@ pub enum CallStatus {
 
 #[derive(Debug, Deserialize)]
 pub struct Call {
-    from: String,
-    to: String,
-    sid: String,
-    status: CallStatus,
+    _from: String,
+    _to: String,
+    _sid: String,
+    _status: CallStatus,
 }
 
 impl Client {
@@ -72,10 +72,10 @@ impl FromMap for Call {
             _ => return Err(TwilioError::ParsingError),
         };
         Ok(Box::new(Call {
-            from,
-            to,
-            sid,
-            status: stat,
+            _from: from,
+            _to: to,
+            _sid: sid,
+            _status: stat,
         }))
     }
 }
